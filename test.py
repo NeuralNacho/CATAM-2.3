@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import cmath
 
-print(abs(1+2j))
+a = np.array([1+1j, 2-1j])
+print(a.real)
