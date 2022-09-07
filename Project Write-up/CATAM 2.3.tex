@@ -1,0 +1,346 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[medium]{titlesec}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage[legalpaper, portrait, margin=1.2in]{geometry}
+\usepackage{wrapfig}
+\usepackage{varwidth}
+\usepackage{listings}
+\usepackage{amssymb}
+\usepackage{enumitem}
+\usepackage{bm}
+
+\allowdisplaybreaks  % will allow page break in align environment
+
+\begin{document}
+	
+\setlength{\parindent}{0pt}
+\captionsetup{justification=centering}
+\lstset{
+	showstringspaces=false
+}
+
+
+\begin{titlepage}
+	\Huge
+	\textbf{2.3}
+	\begin{center}
+		\vspace*{7cm}
+		
+		\Huge
+		\textbf{Additional Project \\ Curves in the Complex Plane}
+		
+		\vspace{0.5cm}
+	\end{center}
+\end{titlepage}
+
+\section{Complex roots of $f(z)$}
+
+\subsubsection*{Programming Task: Plot $f(C_{r})$ and find closest point to origin}
+
+A program for this task can be found on page \pageref{programmingtask1}. 
+Below is sample output for $r = 2$, demonstrating that the program works as intended.
+
+\vspace{0.4cm}
+\begin{minipage}{\textwidth}
+	\centering
+	\includegraphics[width=0.75\linewidth]{ProgTask1_results}
+	\vspace{0.4cm}\\
+	\includegraphics[width=0.75\linewidth]{ProgTask1_fig}
+	\captionof{figure}{Sample output for $r = 2$}
+\end{minipage}
+
+%In the program, 100,000 points on the circle $C_{r}$, with the angle increasing linearly, are mapped to generate the graph. We show that the modulus is calculated to a high degree of accuracy using this mapping.\\
+%Let $w_{0}=f_{1}(z_{0})$ be the closest point to $0+0i$.\\
+%$z_{0} = r\text{exp}(i(\frac{2n\pi}{100000}+\epsilon))$ where $|\epsilon|\leq\frac{\pi}{100000}$.\\
+%Let $w = f_{1}(r\text{exp}(i(\frac{2n\pi}{100000}))$. Then the modulus of the closest calculated point, r, satisfies $r\leq|w|$.
+%|w-w_{0}| \leq ... |\leq 0.001(r^3+r^2+sqrt(5)r)|
+% So accuracy of smallest modulus (r) is < 0.001 (for r near 1) using this many points
+	
+
+\subsubsection*{Question 1}
+
+We know there are 3 roots since $f_{1}$ is a cubic. Plotting a graph of the modulus of the closest point against $r$ for $r$ between $0$ and $2$, it is clear that the roots are near 0.6, 1.4 and 1.6. 
+\vspace{0.2cm}\\
+\begin{minipage}{\textwidth}
+	\includegraphics[width=\linewidth]{q1_fig1}
+	\captionof{figure}{Modulus of closest point to $0+0i$ for $r\in[0,2]$}
+\end{minipage}
+\vspace{0.4cm}
+
+The function $find$\textunderscore$decimal$ on page \pageref{finddec} is then used to work out the optimal value of r for an increasing number of decimal places. Using $0.6$ as an example, we perform calculations as follows:
+\begin{itemize}
+	\item[--] Find minimum of the modulus of the closest point on $f(C_{r})$ to $0+0i$ for \\ $ r= 0.50, 0.51, ... 0.69, 0.70$.
+	\item[--] Find that $0.62$ is minimal so we know that to 2d.p. the value of $r$ at the root is $0.61, 0.62$ or $0.63$ since the moduli of the closest points for different $r$ decreases as $r$ approaches the root value.
+	\item[--] Find minimum from $0.610, 0.611, ... 0.629, 0.630$.
+	\item[--] After the 4th recursion we obtain the result $r = 0.61803$ so it must be that $r = 0.6180$ to 4d.p.
+\end{itemize}
+
+Then doing the same for 1.4 and 1.6, we obtain $r = 1.4142$ and $r = 1.6180$ also to 4d.p. \vspace{0.2cm}% We also output the value of $z$ (to 3s.f.) used to obtain this $r$ and, letting $z = re^{i\theta}$, we can find $\theta$ for these values of $z$.
+%\begin{align}  % confusing to have this here
+%	&r = 0.6180, ~ z = 0.618i, ~~~~~~~~ \theta\approx\pi/2  \nonumber\\
+%	&r = 1.4142, ~ z = 1.00 + 1.00i, ~ \theta\approx\pi/4 \nonumber\\
+%	&r = 1.6180, ~ z = -1.62i, ~~~~~~~~ \theta\approx3\pi/2 \nonumber
+%\end{align}
+
+Let $z$ be the value we approximate the root to be and write  $z = re^{i\theta}$. We need to ensure that the real and imaginary parts of $z$ are accurate up to 3s.f. From the $find$\textunderscore$decimal$ function, we also output the values of $z$ at the optimal values of $r$ (however we cannot be sure they are accurate to 3s.f.) and find that $\theta$ is approximately $1.57, 0.79, 4.71$ for $r = 0.6180, 1.4142, 1.6180$ respectively. \vspace{0.2cm} \\
+% Of course we know in reality these are pi/2, pi/4, 3pi/2 respectively
+Let the exact values of $r$ and $\theta$ at the root be $r_{0}$ and $\theta_{0}$ respectively. For the three roots, we know $r_0$ to 4d.p. so we can say $r_{0}\in[r-5\times10^{-5}, r+5\times10^{-5}]$.
+\vspace{0.2cm}\\
+Then we can use a very small step size for $\theta$ of $2\pi/350,000$ on a small arc of $C_{r}$ (for fast calculation) around the values of $\theta$ above to find the optimal $z$ with more accuracy. We obtain $\theta = 1.5708..., 0.7854..., 4.7123...$ and these results are accurate to within $0.00001$ radians since $\pi/350,000<10^{-5}$.
+%Then we repeat the $find$\textunderscore$decimal$ algorithm with a very small step size for $\theta$ of $2\pi/350,000$ on a small arc of $C_{r}$ around the values of $\theta$ above and obtain the same values of $z$ as above.  Then $\theta$ is accurate to within $\pi/350,000<0.00001$ radians.
+% Note couldn't use this angle before in find_decimal since then generating 350,000 points and doing that like 4x20 times so millions of calculations. But now we've narrowed down region can focus on small arc
+\begin{align}
+	\therefore \text{cos}(\theta_{0})&\in[\text{cos}(\theta-10^{-5}), \text{cos}(\theta+10^{-5})] \nonumber\\
+	&\subset[{\text{cos}(\theta)-10^{-5}, \text{cos}(\theta)+10^{-5}}]\nonumber\\
+	\implies(r-5\times10^{-5})(\text{cos}(\theta)&-10^{-5})\leq r_{0}\text{cos}(\theta_{0})\leq (r+5\times10^{-5})(\text{cos}(\theta)+10^{-5}) \nonumber\\
+	r<2 &\text{ and } |\text{cos}(\theta)|<1,  \nonumber\\
+	\implies  r\text{cos}(\theta)&-7\times10^{-5} < r_{0}\text{cos}(\theta_{0}) < r\text{cos}(\theta)+7\times10^{-5} \nonumber
+%	\implies \text{The }& \text{real part of $z$ is accurate to 3d.p.}\nonumber
+\end{align}
+The same applies to  $r\text{sin}(\theta)$. For $r = 0.6180$, we have,
+\begin{align*}
+	& r\text{cos}(\theta) + ir\text{sin}(\theta) = 0.61803i \\
+	\implies & r_{0}\text{cos}(\theta_{0}) \in [-7\times10^{-5}, 7\times10^{-5}] \\
+	& r_{0}\text{sin}(\theta_{0}) \in [0.61803-7\times10^{-5}, 0.61803+7\times10^{-5}] = [0.61796, 0.6181] \\
+	\implies & z = 0.618i \text{~ is accurate to 3s.f. for ~} r = 0.618.
+\end{align*}
+
+% Calculating $z = r\text{cos}(\theta)+r\text{sin}(\theta)$, we find,
+%\begin{align}  % This is not nice
+%	&r = 0.6180, ~ z \in [0.61803i - 0.00007(1+i),0.61803i + 0.00007(1+i)] \text{ ~~~(2D box)} \nonumber\\
+%	&r = 1.4142, ~ z \in [1.000000 + 1.00000i - 0.00007(1+i), 1.000000 + 1.00000i + 0.00007(1+i)] \nonumber\\
+%	&r = 1.6180, ~ z \in [-1.61803i - 0.00007(1+i), -1.61803i + 0.00007(1+i)] \nonumber
+%\end{align}
+Doing the same calculations for the other $r$, it follows that to 3s.f. the values of $z$ for the corresponding $r$ are,
+\begin{align}
+	& z =  0.618i && z = 1.00 + 1.00i &&& z = -1.62i\nonumber\\
+	& r = 0.618 && r = 1.414, &&& r = 1.618 ~~ \nonumber 
+\end{align}
+
+
+\subsubsection*{Question 2}
+
+\begin{align}
+	f'_{1}(z) = 3z^{2}-2z+2-i\nonumber
+\end{align}
+
+We follow the same procedure as in Question 1, first plotting a graph to find that the values of $r$ at the roots are approximately 0.8 and 0.95. Inputting these values into the recursive function we obtain,
+\begin{align}
+	&r = 0.785, ~ z \approx 0.12-0.78i, ~ \theta\approx4.86\nonumber\\ % r = 0.7847 to 4d.p.
+	&r = 0.950, ~ z \approx 0.55+0.78i, ~ \theta\approx0.96\nonumber % r = 0.9498 to 4d.p.
+\end{align}
+Then, again using a step size for $\theta$ of $2\pi/350,000$ on a small arc of $C_{r}$, we increase the accuracy of the result for $r$ to 5d.p. and find values of $z$. Using the same idea as in Question 1, this time the real and imaginary parts are accurate to $1.2\times10^{-5}$ (not $7\times10^{-5}$ like in Question 1 since $r$ now accurate to 1 more d.p.). We find:
+% 0.00007 not sufficient for 0.11847 since 0.11847+0.00007 = 0.11854 rounds to 0.119 which is incorrect
+\begin{align*}  % confusing to have this here
+	& r = 0.78470, ~ \text{Re}(z) \in [0.11847 - 1.2\times10^{-5}, 0.11847 + 1.2\times10^{-5}] = [0.118458, 0.118482] \\
+	& ~~~~~~~~~ \text{Im}(z) \in [-0.77571 - 1.2\times10^{-5}, -0.77571 + 1.2\times10^{-5}] = [-0.775722, -0.775698] \\
+	\\
+	& r = 0.94986, ~ ~ \text{Re}(z) \in [0.54819 - 1.2\times10^{-5}, 0.54819 + 1.2\times10^{-5}] = [0.548178, 0.548202] \\
+	& ~~~~~~~~~~~~~~~~~~~ \text{Im}(z) \in [0.77570 - 1.2\times10^{-5}, 0.77570 + 1.2\times10^{-5}] = [0.775688, 0.775712]
+	% z \in [0.11847 - 0.77571i - 0.000012(1+i),0.11847 - 0.77571i + 0.000012(1+i)] \\
+	% &r = 0.94986, ~ z \in [0.54819 + 0.77570i - 0.000012(1+i), 0.54819 + 0.77570i + 0.000012(1+i)]
+\end{align*}
+It follows that to 3s.f. the values of $z$ for the corresponding $r$ must be,
+\begin{align}
+	& z = 0.118 - 0.776i && z = 0.548 + 0.776i \nonumber\\
+	& r = 0.785 && r = 0.950 \nonumber 
+\end{align}
+
+\section{Images $f(C_{r})$ of $C_{r}$}
+
+
+\subsubsection*{Question 3}
+
+The change made to the program is simply to add the function to be plotted as a parameter in the $generate$\textunderscore$points$ function found in the program for programming task 1 on page \pageref{programmingtask1}.
+\vspace{0.1cm}\\
+\begin{minipage}{\textwidth}
+	\includegraphics[width=\linewidth]{q3_fig1}
+	\captionof{figure}{Plots of $g(C_{r})$ for different values of $r$}
+	\label{q3_fig1}
+\end{minipage}
+\renewcommand\labelitemi{{\boldmath$\cdot$}} % change bullet point size
+\begin{itemize}[topsep = 8pt, leftmargin = *]
+	\itemsep 0em
+	\item As $r$ increases, the size of the shape formed by $g(C_{r})$ also increases since the magnitude of the $z$ and $z^{3}$ terms increases.
+	\item For very small $r$, such as $r=0.1$ in Figure \ref{q3_fig1}, $g(C_{r})$ approximates a circle. This is because $z$ is much larger than $z^{3}$ here so the curve is almost the circle from the image of $z$. 
+%	\item  For large $r$ the curve resembles a circle as demonstrated by $r=5$ in figure \ref{q3_fig}. This is because the $z^3$ term is much larger than the $z$ term here so the curve is almost the circle from the image of $z^{3}$.
+	\item As $r$ increases up to $1$/$\sqrt3$, the top and bottom of this circle begin curving inwards. Then two loops form simultaneously, one at the top and another at the bottom of the curve $g(C_{r})$.
+	\item The loops appear for $r>1$/$\sqrt3$. This is derived by taking $z=re^{i\theta}$ and finding the derivative of the real part of $g$ w.r.t. $\theta$ to be $-3r^{3}sin(3\theta)+rsin(\theta)$ with $r=1$/$\sqrt3$ as the positive root when $\theta=\pi/2$ ($g(z)$ is pure imaginary for this $\theta$).
+	\item An intuitive explanation for the loops is that we have a circle from $z^3$ which loops three times added to a circle from $z$ which loops once. Then once the $z^{3}$ term is large enough to have an effect the loops start developing.
+% May want to revisit intuitive explanation after Q7 k_tot
+	\item We can examine the curve for $\theta=0$ to $\theta=\pi/2$ and then use symmetry to form the rest of the curve.\vspace{0.2cm}\\
+	\begin{minipage}{\textwidth}
+		\centering
+		\includegraphics[width=0.75\linewidth]{q3_fig2}
+		\captionof{figure}{Formation of $g(C_{0.75})$ from a quarter of $C_{0.75}$}
+		\label{q3_fig2}
+	\end{minipage}
+	\vspace{0.2cm}\\
+	The black lines in Figure \ref{q3_fig2} show points which are added to create points in the subplot to the right of Figure \ref{q3_fig2}. We can think of the orange curve distorting the green curve to create the blue curve. Using the reflection symmetry in the real and imaginary axes, we obtain the curve for $r = 0.75$ in Figure \ref{q3_fig1}. 
+	\item The loops grow in size as $r$ increases and overlap for $r>1$. For large $r$ the curve again resembles a circle as demonstrated by $r=5$ in figure \ref{q3_fig1}.
+\end{itemize}
+
+
+\subsubsection*{Question 4}
+
+\begin{minipage}{\textwidth}
+	\includegraphics[width=\linewidth]{q4_fig1}
+	\captionof{figure}{Plots of $h(C_{r})$ for different values of $r$}
+	\label{q4_fig1}
+\end{minipage}
+\begin{itemize}[topsep = 8pt, leftmargin = *]
+	\itemsep 0em
+	\item The change in $h(C_{r})$ as $r$ increases is similar to in Question 3 since two loops develop and because for very small and large $r$, the curve resembles a circle. This is clear to see in Figure \ref{q4_fig1}.
+	\item The curves are shifted to the right of the origin because of the $+1$ term in $h(z)$.
+	\item Unlike in Question 3, the loops develop to the left and right of the curve as the terms of $h$ pulls the curve inward on the real axis rather than on the imaginary axis.
+%	\item The looping can be thought of as being caused by the same kind of distortion described in Question 3. 
+	\item For $r < 1$ a right loop develops before the left loop. For these smaller values of $r$ the $z^3$ is relatively small so can be ignored. % Plotting without z^3 term confirms this to be true 
+	Then the $-z^{2}$ term (whose image is a circle looping twice) stretches points near the real axis on the circle formed by $1-z$ to the left. % Also points on top and bottom stretched right
+	This results in right side of $h(C_{r})$ being more warped than the left side. The image below represents this visually. \vspace{0.2cm}\\
+	\begin{minipage}{\textwidth}
+		\centering
+		\includegraphics[width=0.5\linewidth]{q4_fig2}
+%		\captionof{figure}{}
+		\label{q4_fig2}
+	\end{minipage}
+	\item The left loop emerges at the same time as the the two sides of the curve intercept at $0+0i$ as shown in Figure \ref{q4_fig1} using $r=1$ and $r=1.05$. This is because $h(z)=(z-1)^{2}(z+1)$ so there is a triple root for $r=1$ which is only possible if we have the configuration described.
+	\item For larger $r$ there is a transition where the curve has 2 points of self-intersection rather than 4. This transition happens at around $r=2.2$ and is because for larger $r$ the $z^3$ term dominates $h$ causing the former right loop to grow such that it encircles the entire curve. 
+% Don't start with loops inside loops
+\end{itemize}
+
+
+\subsubsection*{Question 5}
+
+\begin{minipage}{\textwidth}
+	\includegraphics[width=\linewidth]{q5_fig1}
+	\captionof{figure}{Plots of $f_{1}(C_{r})$ for different values of $r$}
+	\label{q5_fig1}
+\end{minipage}
+\begin{itemize}[topsep = 8pt, leftmargin = *]
+	\itemsep 0em
+	\item Similar to the curves $g(C_{r})$ and $h(C_{r})$, two loops develop as $r$ increases. In this case, they're positioned down and to the right which can be explained as follows: without the $-z^{2}$ term, the curves $f_{1}(C_{r})$ are like the plots in Question 3 Figure \ref{q3_fig1} but rotated by $arg(2-i)$ clockwise. Then $-z^{2}$ shifts these the loops to the right and shifts the lower right section of the curve inwards.
+	\item The lower loop develops before the loop to the right, as shown by the curve for $r = 0.9$ in Figure \ref{q5_fig1}. The same ideas as Question 4 help explain this; for smaller $r$ we get one loop developing faster as we the $z^{3}$ term has limited effect. Here this corresponds to the lower loop developing faster.
+	% (2-i)z is circle. But iz rotates circle! So theta = 0 not corresponding to point on real axis
+	\item As the loops grow they intersect and overlap in the same way as the curves in Questions 3 and 4. Then for very large $r$, the curve has a circular shape.
+\end{itemize}
+
+
+\section{Curvature of images $f(C_{r})$ of $C_{r}$}
+
+
+\subsubsection*{Question 6}
+
+\begin{align}
+	|\kappa| & = \left\vert\frac{d\bm{t}(s)}{d\phi}\frac{d\phi}{ds}\right\vert\nonumber\\
+	\bm{t}  & = \frac{d\bm{x}}{d\phi}\text{\bigg/}\left\vert\frac{d\bm{x}}{d\phi}\right\vert \text{ ~~\&~~ } \left\vert\frac{ds}{d\phi}\right\vert = \left\vert\frac{d\bm{x}}{d\phi}\right\vert = |\bm{x'}|. ~~ \text{Therefore,}\nonumber\\
+	|\kappa| & = \left\vert \frac{d}{d\phi}\left(\frac{\bm{x'}}{|\bm{x'}|}\right) \cdot |\bm{x'}|^{-1}\right\vert \nonumber\\
+	& = \left\vert\frac{|\bm{x'}|\bm{x''} - \bm{x'}\frac{d}{d\phi}|\bm{x'}|}{|\bm{x'}|^{3}}\right\vert \nonumber\\
+	\frac{d}{d\phi} & |\bm{x'}|^{2} = 2\bm{x'}\cdot\bm{x''} \text{ ~~\&~~ } \frac{d}{d\phi}|\bm{x'}|^{2} = 2|\bm{x'}|\frac{d}{d\phi}|\bm{x'}| \implies \frac{d}{d\phi}|\bm{x'}| = \left\vert \frac{\bm{x'} \cdot \bm{x''}}{\bm{x'}} \right\vert \nonumber\\
+	\therefore ~ |\kappa| & = \left\vert\frac{|\bm{x'}|^{2}\bm{x''} - \left\vert \bm{x'}\cdot\bm{x''} \right\vert\bm{x'}}{|\bm{x'}|^{4}}\right\vert \nonumber\\
+	& = \left\vert \frac{|\bm{x'} \times (\bm{x''} \times \bm{x'})}{|\bm{x'}|^{4}} \right\vert \text{ ~using triple product identity} \nonumber\\
+	~ \bm{x''} & \text{ and } \bm{x''} \times \bm{x'} \text{ orthogonal} \implies |\kappa| = \frac{|\bm{x'} \times \bm{x''}|}{|\bm{x'}|^{3}} ~~~ \qed \nonumber
+\end{align}
+
+Finding expressions for $\bm{x'}$ and $\bm{x''}$:
+\begin{align}
+	\bm{t}(s) = & \frac{\bm{x'}}{|\bm{x'}|} \text{ ~~\&~~ } |\bm{x'}| = \left\vert\frac{ds}{d\phi}\right\vert \implies \bm{x'} = \left\vert\frac{ds}{d\phi}\right\vert \bm{t}(s) \nonumber\\
+	\bm{k}(s) & = \frac{d\bm{t}(s)}{ds}  = \frac{d}{d\phi}\left({\left\vert\frac{ds}{d\phi}\right\vert^{-1} \bm{x'}}\right)  \left(\frac{ds}{d\phi}\right)^{-1} \nonumber\\
+	\frac{d}{d\phi}\left( \left\vert\frac{ds}{d\phi}\right\vert \right)^{2} = & ~ 2\frac{ds}{d\phi}\frac{d^{2}s}{d\phi^{2}} \text{ ~~\&~~ } \frac{d}{d\phi}\left( \left\vert\frac{ds}{d\phi}\right\vert \right)^{2} = 2\left\vert\frac{ds}{d\phi}\right\vert \frac{d}{d\phi}\left\vert\frac{ds}{d\phi}\right\vert \nonumber\\
+	& \implies \frac{d}{d\phi}\left\vert\frac{ds}{d\phi}\right\vert = \frac{ds}{d\phi}\frac{d^{2}s}{d\phi^{2}} \bigg/ \left\vert\frac{ds}{d\phi}\right\vert \nonumber\\
+	\therefore ~ \bm{k}(s) & = \frac{\left(\frac{ds}{d\phi}\right)^{2}\bm{x''} - \frac{ds}{d\phi} \frac{d^{2}s}{d\phi^{2}}\bm{x'}}{\left(\frac{ds}{d\phi}\right)^{3} \left\vert\frac{ds}{d\phi}\right\vert} \nonumber\\
+	\therefore ~~~ \bm{x''} & = \left\vert\frac{ds}{d\phi}\right\vert \left(\frac{ds}{d\phi} \bm{k}(s) + \left(\frac{ds}{d\phi}\right)^{-1}  \frac{d^{2}s}{d\phi^{2}} \bm{t}(s)\right) \nonumber
+\end{align}
+
+$\bm{k}(s)$ is orthogonal to $\bm{t}(s)$ since $\frac{d}{ds}(\bm{t}\cdot\bm{t}) = 0 \implies \bm{t}\cdot\bm{k} = 0$. Then  $\bm{t}(s)\times\bm{k}(s)$ is orthogonal to the plane the curve is in. $\bm{k}(s)$ points towards the local centre of rotation. Therefore, using the right hand rule, the curve is turning anticlockwise at $\bm{x}(s)$ iff  the component of $\bm{t}(s)\times\bm{k}(s)$ orthogonal to the plane is $> 0$. Hence sgn$(\kappa)$ = sgn$(\bm{t}(s)\times\bm{k}(s))$, where sgn of the vector is taken to mean the sign of the component orthogonal to the plane.
+\begin{align}
+	\bm{x'}\times\bm{x''} = \left\vert\frac{ds}{d\phi}\right\vert^{2} \frac{ds}{d\phi} \left(\bm{t}(s)\times\bm{k}(s)\right) \nonumber\\
+	\implies \text{sgn}(\kappa) = \text{sgn}\left(\frac{\bm{x'}\times\bm{x''}}{ds/d\phi}\right)	\nonumber
+\end{align}
+
+In our case, $\frac{ds}{d\phi} > 0$ since distance along the curve increases as $\phi$ increases, hence,
+$\text{sgn}(\kappa) = \text{sgn}\left(\bm{x'}\times\bm{x''}\right)$.
+\\
+
+Writing (8) and (9) in terms of derivatives of $f(z)$ with respect to $z$:
+\begin{align}
+	& \frac{df(z(\phi))}{d\phi} = \frac{df(z)}{dz}\frac{dz}{d\phi} \nonumber\\
+	& \frac{d^{2}f(z(\phi))}{d\phi^{2}} = \frac{df(z)}{dz} \frac{d^{2}z}{d\phi^{2}} + \frac{d^{2}f(z)}{dz^{2}} \left(\frac{dz}{d\phi}\right)^{2} \nonumber\\
+	& z = re^{i\phi} \text{ along } C_{r} \implies \frac{dz}{d\phi} = ire^{i\phi} = iz, ~~ \frac{d^{2}z}{d\phi^{2}} = -re^{i\phi} = -z \nonumber\\
+	& \therefore ~ \frac{df(z(\phi))}{d\phi} = ~ i\frac{df(z)}{dz}re^{i\phi} \nonumber\\
+	& \frac{d^{2}f(z(\phi))}{d\phi^{2}} = -re^{i\phi}\left(\frac{df(z)}{dz} + \frac{d^{2}f(z)}{dz^{2}}re^{i\phi}\right) \nonumber\\
+	\therefore ~ \bm{x'} = & \left(\text{Re}\left[i\frac{df(z)}{dz}z\right], \text{Im}\left[i\frac{df(z)}{dz}z\right] \right) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \text{(8)} \nonumber\\
+	\bm{x''} = & \left(\text{Re}\left[-z\frac{d}{dz}\left(\frac{df(z)}{dz}z\right) \right], \text{Im}\left[-z\frac{d}{dz}\left(\frac{df(z)}{dz}z\right) \right] \right) ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ \text{(9)} \nonumber
+	% OR \bm{x''} = & \left(\text{Re}\left[-z\left(\frac{df(z(\phi))}{dz} + \frac{d^{2}f(z(\phi))}{dz^{2}}z\right) \right], \text{Im}\left[ -z\left(\frac{df(z(\phi))}{dz} + \frac{d^{2}f(z(\phi))}{dz^{2}}z \right) \right] \right) ~~~~~ \text{(9)} \nonumber
+\end{align}
+
+\subsubsection*{Programming Task: Write a program to compute the integral $\kappa_{tot}$}
+
+\begin{align}
+	\kappa_{tot} = \int_{0}^{2\pi} \kappa |\bm{x'}| d\phi \nonumber
+\end{align}
+The integral is calculated using this equation, and the trapezium rule. The code for this program can be found on page \pageref{programmingtask2}.
+
+\subsubsection*{Question 7}
+
+\begin{minipage}{\textwidth}
+	\includegraphics[width=\linewidth]{q7_fig1}
+	\captionof{figure}{Plots of $\kappa_{tot}$ against $r$ for $f_{1}(z)$, $g(z)$ and $h(z)$}
+	\label{q7_fig1}
+	% not too many points plotted because when loop first develop derivative almost zero
+\end{minipage}\vspace{0.4cm}
+
+From the graphs, it is clear to see that the value of $k_{tot}$ jumps and plateaus at increasing multiples of $2\pi$. The jumps are at the values of $r$ where there is a root in the derivative of the function for this $r$. For instance, the two values of $r$ at the roots found in Question 2 correspond exactly with the jumps in Figure \ref{q7_fig1} for $f_{1}(z)$. Additionally, there is a jump at $r = 1/\sqrt{3}$ in $g(z)$ where we said the loop starts to form for $g(C_{r})$. This demonstrates that the curvature jumps when another (anticlockwise) loop forms and this is precisely where we will find roots in the derivative.   Numerically, when a new small loop forms, the value of $|\bm{x'}|$ on this loop will also be small, so we get a spike in the value of $\kappa$ using the formula in Question 6. % ??? USe Q6 
+\\\\
+For a general polynomial $f(z)$, $\kappa_{tot}$ tells us the number of $2\pi$ rotations anticlockwise someone would experience as they move along the curve. This is supported by all the evidence of the previous paragraph.
+% it is the turning number
+
+
+\pagebreak
+\textbf{programming\textunderscore task\textunderscore1.py for programming task}\centering\label{programmingtask1}
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/programming_task_1.py}
+\vspace{2cm}
+
+\pagebreak
+\textbf{q1and2\textunderscore functions.py used in questions 1 and 2}\centering\label{finddec}
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/q1and2_functions.py}
+\vspace{2cm}
+
+\pagebreak
+\textbf{question\textunderscore 1.py for question 1}\centering
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/question_1.py}
+\vspace{6cm}
+
+\pagebreak
+\textbf{question\textunderscore 2.py for question 2}\centering
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/question_2.py}
+\vspace{2cm}
+
+\pagebreak
+\textbf{question\textunderscore 3.py for question 3}\centering
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/question_3.py}
+\vspace{6cm}
+
+\textbf{question\textunderscore 4.py for question 4}\centering
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/question_4.py}
+\vspace{2cm}
+
+\pagebreak
+\textbf{question\textunderscore 5.py for question 5}\centering
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/question_5.py}
+\vspace{2cm}
+
+\pagebreak
+\textbf{programming\textunderscore task\textunderscore 2.py for programming task}\centering\label{programmingtask2}
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/programming_task_2.py}
+\vspace{2cm}
+
+\pagebreak
+\textbf{question\textunderscore 7.py for question 7}\centering
+\lstinputlisting[language=Python]{C:/Users/angus/OneDrive/Documents/CATAM 2.3 Code/CATAM-2.3/question_7.py}
+\vspace{2cm}
+
+\end{document}
